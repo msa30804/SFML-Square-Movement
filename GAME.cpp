@@ -2,37 +2,37 @@
 //publi functions
 void GAME::run()
 {
-	
-	while (window.isOpen())
-	{
-		processEvents();
 
-		render();
-		update();
-	}
-	
+    while (window.isOpen())
+    {
+        processEvents();
+
+        render();
+        update();
+    }
+
 }
 
 //private functions
 void GAME::processEvents()
 {
-	{
-		sf::Event event;
-		while (window.pollEvent(event)) 
-		{
-			if (event.type == sf::Event::Closed) 
-			{
-				window.close();
-			}
-			if (event.type == Event::KeyPressed)
-			{
-				handlemovements(keytime, event.key.code);
-			}
-		}
-	}
+    sf::Event event;
+    while (window.pollEvent(event))
+    {
+        switch (event.type)
+        {
+        case sf::Event::Closed:
+            window.close();
+            break;
+        case sf::Event::KeyPressed:
+            handlemovements(event.key.code);
+            break;
+        default:
+            break;
+        }
+    }
 }
-//movement of square
-void GAME::handlemovements(int& keytime, Keyboard::Key key)
+void GAME::handlemovements( Keyboard::Key key)
 {
     if (keytime < 1)
     {
@@ -69,7 +69,7 @@ void GAME::handlemovements(int& keytime, Keyboard::Key key)
             keytime = 0;
         }
         break;
-    
+
     default:
         break;
     }
@@ -96,7 +96,7 @@ void GAME::handlemovements(int& keytime, Keyboard::Key key)
         // Only change the color if enough time has elapsed
         if (clock.getElapsedTime().asSeconds() > colorChangeDelay)
         {
-            
+
             square.setFillColor(Color::Yellow);
             clock.restart();  // Restart the clock to measure time again
         }
@@ -109,19 +109,15 @@ void GAME::handlemovements(int& keytime, Keyboard::Key key)
 
 void GAME::render()
 {
-	window.clear(sf::Color::Cyan);
-	// Draw objects here
-	window.draw(square);
-	// showing Window
-	window.display();
+    window.clear(sf::Color::Cyan);
+    // Draw objects here
+    window.draw(square);
+    // showing Window
+    window.display();
 }
 
 void GAME::update()
 {
-	//update logic here
-	
+    //update logic here
+
 }
-	
-
-
-
