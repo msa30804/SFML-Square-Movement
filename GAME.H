@@ -19,7 +19,7 @@ private:
 	//private functions
 
 	void processEvents();
-	void handlemovements(int &keytime,Keyboard::Key key);
+	void handlemovements(Keyboard::Key key);
 	
 
 	void update();
@@ -36,6 +36,10 @@ public:
 		square.setFillColor(sf::Color::Green);
 		square.setOutlineThickness(20.f);
 		square.setOutlineColor(Color::Black);
+	}
+	~GAME()
+	{
+		window.close();
 	}
 
 	 void run();
