@@ -1,28 +1,51 @@
 #include "GAME.h"
+
 //publi functions
 void GAME::run()
 {
 
-    while (window.isOpen())
+    while (this->window->isOpen())
     {
-        processEvents();
+        pollEvents();
+        this->updatemousepositions();
+        //this->updateEnemies();
 
         render();
         update();
     }
 
 }
-
+void GAME::updatemousepositions()
+{
+    //updates the mouse positions
+    //mouse position  relative to window(vector 2i)
+    this->mouseposwindow = Mouse::getPosition(*this->window);
+}
+void GAME::initfighter()
+{
+    square.setPosition(400, 300);
+    square.setFillColor(sf::Color::Green);
+    square.setOutlineThickness(20.f);
+    square.setOutlineColor(Color::Black);
+}
+void GAME::initenemies()
+{
+    this->enemy.setPosition(Vector2f(20.f, 20.f));
+    this->enemy.setSize(Vector2f(110.f, 110.f));
+    this->enemy.setFillColor(Color::Black);
+    this->enemy.setOutlineColor(Color::Green);
+    this->enemy.setOutlineThickness(2.0f);
+} 
 //private functions
-void GAME::processEvents()
+void GAME::pollEvents()
 {
     sf::Event event;
-    while (window.pollEvent(event))
+    while (this->window->pollEvent(event))
     {
         switch (event.type)
         {
         case sf::Event::Closed:
-            window.close();
+            this->window->close();
             break;
         case sf::Event::KeyPressed:
             handlemovements(event.key.code);
@@ -41,28 +64,28 @@ void GAME::handlemovements( Keyboard::Key key)
 
     const float moveSpeed = 25.f;
     switch (key) {
-    case Keyboard::A:
+    case Keyboard::Left:
         if (keytime >= 1)
         {
             square.move(-moveSpeed, 0.f);
             keytime = 0;
         }
         break;
-    case Keyboard::D:
+    case Keyboard::Right:
         if (keytime >= 1)
         {
             square.move(moveSpeed, 0.f);
             keytime = 0;
         }
         break;
-    case Keyboard::S:
+    case Keyboard::Down:
         if (keytime >= 1)
         {
             square.move(0.f, moveSpeed);
             keytime = 0;
         }
         break;
-    case Keyboard::W:
+    case Keyboard::Up:
         if (keytime >= 1)
         {
             square.move(0.f, -moveSpeed);
@@ -78,14 +101,14 @@ void GAME::handlemovements( Keyboard::Key key)
     if (squareBounds.left < 0.f) {
         square.setPosition(0.f, square.getPosition().y);
     }
-    else if (squareBounds.left + squareBounds.width > window.getSize().x) {
-        square.setPosition(window.getSize().x - squareBounds.width, square.getPosition().y);
+    else if (squareBounds.left + squareBounds.width > this->window->getSize().x) {
+        square.setPosition(this->window->getSize().x - squareBounds.width, square.getPosition().y);
     }
     if (squareBounds.top < 0.f) {
         square.setPosition(square.getPosition().x, 0.f);
     }
-    else if (squareBounds.top + squareBounds.height > window.getSize().y) {
-        square.setPosition(square.getPosition().x, window.getSize().y - squareBounds.height);
+    else if (squareBounds.top + squareBounds.height > this->window->getSize().y) {
+        square.setPosition(square.getPosition().x, this->window->getSize().y - squareBounds.height);
     }
 
     static sf::Clock clock;  // Declare a static clock to measure time
@@ -109,15 +132,26 @@ void GAME::handlemovements( Keyboard::Key key)
 
 void GAME::render()
 {
-    window.clear(sf::Color::Cyan);
+    this->window->clear();
     // Draw objects here
-    window.draw(square);
+    //this->RenderEnemies();
+    this->window->draw(square);
+    this->window->draw(enemy);
     // showing Window
-    window.display();
+    this->window->display();
+}
+
+void GAME::initvariables()
+{
+    //game logic
+    
 }
 
 void GAME::update()
 {
     //update logic here
+    //cout << "mouse pos : " << Mouse::getPosition(this->window).x << " " << Mouse::getPosition(this->window).y << endl;
 
 }
+
+
